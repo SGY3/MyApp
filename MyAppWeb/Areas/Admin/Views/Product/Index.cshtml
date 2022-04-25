@@ -1,0 +1,41 @@
+﻿
+<h1>List of Product</h1>
+
+
+<div class="row p-4">
+    <div class="col-6"></div>
+    <div class="col-6">
+        <a class="btn btn-primary" asp-action="CreateUpdate" asp-controller="Product">Create New Product</a>
+    </div>
+</div>
+<table class="table" id="myTable">
+    <thead>
+        <tr>
+            <th>
+               Product Name
+            </th>
+            <th>
+               Product Description
+            </th>
+            <th>
+                Price
+            </th>
+             <th>
+                Category
+            </th>
+               <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+  
+</table>
+
+
+
+@section scripts{
+
+    <script src="~/js/Product.js">
+
+    </script>
+}
