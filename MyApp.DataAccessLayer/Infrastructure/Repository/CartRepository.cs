@@ -13,7 +13,12 @@ namespace MyApp.DataAccessLayer.Infrastructure.Repository
         private ApplicationDbContext _context;
         public CartRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context; 
+            _context = context;
+        }
+
+        public int IncrementCartItem(Cart cart, int count)
+        {
+            return cart.Count += count;
         }
     }
 }

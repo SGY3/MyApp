@@ -23,6 +23,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 builder.Services.AddSingleton<IEmailSender, EmailSender>();
 builder.Services.AddRazorPages();
+//For Login Logout Redirect if not Logged in
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,7 +44,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 app.MapRazorPages();

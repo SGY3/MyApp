@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyApp.DataAccessLayer.Infrastructure.IRepository;
 using MyApp.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace MyAppWeb.Controllers
 {
@@ -23,17 +25,43 @@ namespace MyAppWeb.Controllers
             return View(products);
         }
         [HttpGet]
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? ProductId)
         {
             Cart cart = new Cart()
             {
-                Product = _unitOfWork.Product.GetT(x => x.Id == id, includeProperties: "Category"),
-                Count = 1
+                Product = _unitOfWork.Product.GetT(x => x.Id == ProductId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = (int)ProductId
 
             };
             return View(cart);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Details(Cart cart)
+        {
+            if (ModelState.IsValid)
+            {
+                //to get Application id of user
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+                cart.AppliationUserId = claims.Value;
 
+                var cartItem = _unitOfWork.Cart.GetT(x => x.ProductId == cart.ProductId && x.AppliationUserId == claims.Value);
+
+                if (cartItem == null)
+                {
+                    _unitOfWork.Cart.Add(cart);
+                }
+                else
+                {
+                    _unitOfWork.Cart.IncrementCartItem(cartItem, cart.Count);
+                }
+                _unitOfWork.Save();
+            }
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Privacy()
         {
