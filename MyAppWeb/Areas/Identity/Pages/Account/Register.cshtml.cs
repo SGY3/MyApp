@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using MyApp.CommonHelper;
+using MyApp.Models;
 
 namespace MyAppWeb.Areas.Identity.Pages.Account
 {
@@ -100,6 +101,16 @@ namespace MyAppWeb.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            [Required]
+            public string Name { get; set; }
+            [Required]
+            public string? Address { get; set; }
+            [Required]
+            public string? City { get; set; }
+            [Required]
+            public string? State { get; set; }
+            [Required]
+            public string? PinCode { get; set; }
         }
 
 
@@ -126,6 +137,11 @@ namespace MyAppWeb.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.Name=Input.Name;
+                user.Email=Input.Email;
+                user.Address=Input.Address;
+                user.City=Input.City;
+                user.State=Input.State;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -164,11 +180,12 @@ namespace MyAppWeb.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                //return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
