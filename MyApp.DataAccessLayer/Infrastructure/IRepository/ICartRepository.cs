@@ -11,5 +11,6 @@ namespace MyApp.DataAccessLayer.Infrastructure.IRepository
     {
 
         int IncrementCartItem(Cart cart, int count);
+        int DecrementCartItem(Cart cart, int count);
     }
 }

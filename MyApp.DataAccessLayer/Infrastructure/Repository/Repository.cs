@@ -34,9 +34,13 @@ namespace MyApp.DataAccessLayer.Infrastructure.Repository
             _dbset.RemoveRange(entity);
         }
 
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? predicate = null, string? includeProperties = null)
         {
             IQueryable<T> query = _dbset;
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
             if (includeProperties != null)
             {
                 foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
@@ -51,7 +55,7 @@ namespace MyApp.DataAccessLayer.Infrastructure.Repository
         public T GetT(Expression<Func<T, bool>> predicate, string? includeProperties = null)
         {
             IQueryable<T> query = _dbset;
-            query = query.Where(predicate); 
+            query = query.Where(predicate);
             if (includeProperties != null)
             {
                 foreach (var item in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

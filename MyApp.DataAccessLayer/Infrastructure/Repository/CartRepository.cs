@@ -20,5 +20,9 @@ namespace MyApp.DataAccessLayer.Infrastructure.Repository
         {
             return cart.Count += count;
         }
+        public int DecrementCartItem(Cart cart, int count)
+        {
+            return cart.Count -= count;
+        }
     }
 }
