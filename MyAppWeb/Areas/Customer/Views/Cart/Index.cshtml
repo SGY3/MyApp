@@ -133,12 +133,12 @@
 
                                         <div class="d-flex justify-content-between mb-4">
                                             <p class="mb-2">Total(Incl. taxes)</p>
-                                            <p class="mb-2">@Model.Total.ToString("c")</p>
+                                            <p class="mb-2">@Model.OrderHeader.OrderTotal.ToString("c")</p>
                                         </div>
 
                                         <button type="button" class="btn btn-info btn-block btn-lg">
                                             <div class="d-flex justify-content-between">
-                                                <span>@Model.Total.ToString("c")</span>
+                                                <span>@Model.OrderHeader.OrderTotal.ToString("c")</span>
                                                 <span>Checkout <i class="bi bi-arrow-right"></i></span>
                                             </div>
                                         </button>
